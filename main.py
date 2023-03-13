@@ -180,7 +180,7 @@ try:
 
     porcupine = pvporcupine.create(
         access_key=access_key,
-        keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0'])
+        keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0.ppn'])
     pa = pyaudio.PyAudio()
 
     audio_stream = pa.open(
