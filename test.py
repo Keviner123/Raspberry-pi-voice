@@ -43,9 +43,21 @@ try:
         if keyword_index >= 0:
             print("Hotword Detected")
 
+            # Initialize pygame mixer module
             pygame.mixer.init()
-            sound = pygame.mixer.Sound('ding.mp3')
-            playing = sound.play()
+
+            # Load the MP3 file
+            pygame.mixer.music.load('ding.mp3')
+
+            # Start playing the MP3 file
+            pygame.mixer.music.play()
+
+            # Wait for the MP3 to finish playing
+            while pygame.mixer.music.get_busy():
+                pass
+
+            # Cleanup the pygame mixer module
+            pygame.mixer.quit()
 
 
 finally:
