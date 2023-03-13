@@ -5,6 +5,12 @@ import pvporcupine
 import pygame
 import json
 import requests
+import board
+import neopixel
+
+pixels = neopixel.NeoPixel(board.D18, 60)
+pixels.fill((0, 0, 0))
+
 
 
 def stupidrun():
@@ -169,8 +175,12 @@ pa = None
 audio_stream = None
 
 try:
-    porcupine = pvporcupine.create(access_key="KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA==",keywords=["blueberry","hey google", "jarvis"])
+    access_key = "KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA=="
 
+
+    porcupine = pvporcupine.create(
+        access_key=access_key,
+        keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0'])
     pa = pyaudio.PyAudio()
 
     audio_stream = pa.open(
@@ -193,6 +203,7 @@ try:
             sound = pygame.mixer.Sound('ding.wav')
             playing = sound.play()
 
+            stupidrun()
 
 finally:
     if porcupine is not None:
