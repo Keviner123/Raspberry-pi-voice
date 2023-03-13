@@ -8,7 +8,7 @@ pa = None
 audio_stream = None
 
 try:
-    porcupine = pvporcupine.create(access_key="KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA==",keywords=["blueberry","americano"])
+    porcupine = pvporcupine.create(access_key="KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA==",keywords=["blueberry","hey google", "jarvis"])
 
     pa = pyaudio.PyAudio()
 
@@ -27,6 +27,12 @@ try:
 
         if keyword_index >= 0:
             print("Hotword Detected")
+
+            pygame.mixer.init()
+            sound = pygame.mixer.Sound('ding.wav')
+            playing = sound.play()
+
+
 finally:
     if porcupine is not None:
         porcupine.delete()
