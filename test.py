@@ -58,6 +58,7 @@ try:
 
             # Cleanup the pygame mixer module
             pygame.mixer.quit()
+            keyword_index = 0
 
 
 finally:
