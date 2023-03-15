@@ -7,6 +7,24 @@ import json
 import requests
 import board
 import neopixel
+import pyaudio
+import wave
+import audioop
+import math
+from google.cloud import speech
+import os
+import io
+# Import the required module for text
+# to speech conversion
+from gtts import gTTS
+import pygame
+import threading
+
+
+# This module is imported so that we can
+# play the converted audio
+import os
+
 
 pixels = neopixel.NeoPixel(board.D18, 60)
 pixels.fill((0, 0, 0))
@@ -14,13 +32,18 @@ pixels.fill((0, 0, 0))
 
 
 def stupidrun():
-    import pyaudio
-    import wave
-    import audioop
-    import math
+    print("Hotword Detected")
+
+    pixels.fill((255, 255, 255))
+
+
+    pygame.mixer.init()
+    sound = pygame.mixer.Sound('ding.wav')
+    playing = sound.play()
+
 
     # Set the silence threshold value (in dB)
-    THRESHOLD = 50
+    THRESHOLD = 60
 
     # Set the chunk size and recording duration
     CHUNK_SIZE = 1024
@@ -79,9 +102,7 @@ def stupidrun():
 
 
 
-    from google.cloud import speech
-    import os
-    import io
+
 
 
     #setting Google credential
@@ -109,14 +130,7 @@ def stupidrun():
 
 
 
-    # Import the required module for text
-    # to speech conversion
-    from gtts import gTTS
-    import pygame
 
-    # This module is imported so that we can
-    # play the converted audio
-    import os
 
 
 
@@ -152,6 +166,8 @@ def stupidrun():
     # welcome
     myobj.save("output.mp3")
 
+    pixels.fill((0, 0, 255))
+
 
     # Initialize pygame mixer module
     pygame.mixer.init()
@@ -168,7 +184,7 @@ def stupidrun():
 
     # Cleanup the pygame mixer module
     pygame.mixer.quit()
-
+    pixels.fill((0, 0, 0))
 
 porcupine = None
 pa = None
@@ -188,7 +204,7 @@ try:
                     channels=1,
                     format=pyaudio.paInt16,
                     input=True,
-                    frames_per_buffer=porcupine.frame_length)
+                    frames_per_buffer=1024)
 
     while True:
         pcm = audio_stream.read(porcupine.frame_length)
@@ -197,13 +213,9 @@ try:
         keyword_index = porcupine.process(pcm)
 
         if keyword_index >= 0:
-            print("Hotword Detected")
 
-            pygame.mixer.init()
-            sound = pygame.mixer.Sound('ding.wav')
-            playing = sound.play()
+            threading.Thread(target=stupidrun).start()
 
-            stupidrun()
 
 finally:
     if porcupine is not None:

@@ -1,38 +1,32 @@
 #!/usr/bin/env python3
-import pvporcupine
 import struct
 import pyaudio
 import pvporcupine
-import pygame
-import json
-import requests
-
-# AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-access_key = "KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA=="
+import threading
+import time
 
 porcupine = None
 pa = None
 audio_stream = None
 
-
-handle = pvporcupine.create(
-    access_key=access_key,
-    keyword_paths=['robot_en_raspberry-pi_v2_1_0.ppn'])
-
-
+def print_hello():
+    time.sleep(5)
+    print("Hello World")
 
 try:
+    access_key = "KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA=="
+
     porcupine = pvporcupine.create(
-        access_key=access_key,
-        keyword_paths=['robot_en_raspberry-pi_v2_1_0.ppn'])
+        access_key=access_key,keywords=["picovoice", "blueberry"])
+
     pa = pyaudio.PyAudio()
 
     audio_stream = pa.open(
-                    rate=porcupine.sample_rate,
-                    channels=1,
-                    format=pyaudio.paInt16,
-                    input=True,
-                    frames_per_buffer=porcupine.frame_length)
+        rate=porcupine.sample_rate,
+        channels=1,
+        format=pyaudio.paInt16,
+        input=True,
+        frames_per_buffer=porcupine.frame_length)
 
     while True:
         pcm = audio_stream.read(porcupine.frame_length)
@@ -42,11 +36,7 @@ try:
 
         if keyword_index >= 0:
             print("Hotword Detected")
-
-            pygame.mixer.init()
-            sound = pygame.mixer.Sound('ding.wav')
-            playing = sound.play()
-
+            threading.Thread(target=print_hello).start()
 
 finally:
     if porcupine is not None:
@@ -56,4 +46,4 @@ finally:
         audio_stream.close()
 
     if pa is not None:
-            pa.terminate()
+        pa.terminate()
