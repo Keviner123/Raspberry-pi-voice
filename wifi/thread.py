@@ -45,7 +45,7 @@ def start_webserver():
         if request.method == 'POST':
             ssid = request.form['ssid']
             password = request.form['password']
-            # print(f'ssid: {ssid}, Password: {password}')
+            print(f'ssid: {ssid}, Password: {password}')
             # pixels.fill((25, 25, 25))
 
 
