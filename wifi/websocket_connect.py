@@ -1,18 +1,19 @@
 import websockets
 import asyncio
 import json
+import requests
 
-async def hello():
-    async with websockets.connect("wss://api.prøve.svendeprøven.dk/ws/r2d2device") as websocket:
-        # create a socket message as a json object
-        web_socket_message = {
-            "Type": "register",
-            "Message": "11:11:11:11:11:11", # mac address here
-        }
-        jsons = json.dumps(web_socket_message)
-        await websocket.send(jsons)
-        result = await websocket.recv()
-        print(f"< {result}")
+url = "https://api.xn--prve-hra.xn--svendeprven-ngb.dk/api/question/device?question=Hvad er svar på livet"
+
+payload={}
+headers = {
+'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjMiLCJleHAiOjE3MTA1MDE4MDMsImlzcyI6InRlc3QtZXhhbS1hcGkifQ.9boMBfPswAjOZUo5ZcCLmSnNgk4elePBhGPZPVnOFrk'
+}
 
 
-asyncio.run(hello())
+print(str(payload))
+
+response = requests.request("GET", url, headers=headers, data=payload, timeout=60)
+response = json.loads(response.text)
+
+print(response["text"])

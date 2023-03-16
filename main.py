@@ -1,13 +1,10 @@
+#!/usr/bin/env python3
+
 import threading
-import time
 import urllib.request
-import neopixel
-import board
 from flask import Flask, render_template, request
 import subprocess
-import subprocess
 import time
-#!/usr/bin/env python3
 import struct
 import pyaudio
 import pvporcupine
@@ -16,36 +13,26 @@ import json
 import requests
 import board
 import neopixel
-import pyaudio
 import wave
 import audioop
 import math
 from google.cloud import speech
 import os
 import io
-# Import the required module for text
-# to speech conversion
 from gtts import gTTS
-import pygame
-import threading
-
-
-# This module is imported so that we can
-# play the converted audio
-import os
-
 
 pixels = neopixel.NeoPixel(board.D18, 60)
 
-
 create_ap_process = None
 
+def Speak(text: str):
+    os.system('espeak -vda "'+text+'"')
 
 
-def stupidrun():
+def airun():
     print("Hotword Detected")
 
-    pixels.fill((255, 255, 255))
+    pixels.fill((100, 100, 100))
 
 
     pygame.mixer.init()
@@ -101,19 +88,11 @@ def stupidrun():
         print(f"dB: {db:.2f}")
 
 
-
-
-
     # Close the output file and the input stream
     output_file.close()
     stream.stop_stream()
     stream.close()
     audio.terminate()
-
-
-
-
-
 
 
     #setting Google credential
@@ -138,65 +117,44 @@ def stupidrun():
     # Sends the request to google to transcribe the audio
     response = client.recognize(request={"config": config, "audio": audio})
 
-
-
-
-
-
-
-
     mytext = response.results[0].alternatives[0].transcript
     print(mytext)
 
+    url = "https://api.xn--prve-hra.xn--svendeprven-ngb.dk/api/question/device?question="+mytext
 
-
-    url = "http://192.168.1.128:8000/AskQuestion"
-
-    payload = json.dumps({
-    "Question": mytext
-    })
+    payload={}
     headers = {
-    'Content-Type': 'application/json'
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjMiLCJleHAiOjE3MTA1MDE4MDMsImlzcyI6InRlc3QtZXhhbS1hcGkifQ.9boMBfPswAjOZUo5ZcCLmSnNgk4elePBhGPZPVnOFrk'
     }
+
 
     print(str(payload))
 
     response = requests.request("GET", url, headers=headers, data=payload, timeout=60)
+    response = json.loads(response.text)
 
-    # The text that you want to convert to audio
+
+    # myobj = gTTS(text=response["answer"], lang='da', slow=False)
+    # os.system('espeak -vda "'+response["answer"]+'"')
+    Speak(response["answer"])
 
 
-    # Language in which you want to convert
-    # Passing the text and language to the engine,
-    # here we have marked slow=False. Which tells
-    # the module that the converted audio should
-    # have a high speed
-    myobj = gTTS(text=response.text, lang='da', slow=False)
-
-    # Saving the converted audio in a mp3 file named
-    # welcome
     myobj.save("output.mp3")
 
-    pixels.fill((0, 0, 255))
+    # pixels.fill((0, 0, 255))
 
 
-    # Initialize pygame mixer module
     pygame.mixer.init()
 
-    # Load the MP3 file
     pygame.mixer.music.load('output.mp3')
 
-    # Start playing the MP3 file
     pygame.mixer.music.play()
 
-    # Wait for the MP3 to finish playing
     while pygame.mixer.music.get_busy():
         pass
 
-    # Cleanup the pygame mixer module
     pygame.mixer.quit()
     pixels.fill((0, 0, 0))
-
 
 def set_wifi_connection(ssid: str, psk: str):
 
@@ -229,10 +187,12 @@ def start_webserver():
             ssid = request.form['ssid']
             password = request.form['password']
 
-            set_wifi_connection(ssid, password)
 
             create_ap_process.terminate()
             pixels.fill((0, 0, 0))
+            Speak("R2D2 genstarter")
+
+            set_wifi_connection(ssid, password)
 
 
 
@@ -251,7 +211,6 @@ def check_internet():
         try:
             urllib.request.urlopen("http://www.google.com")
 
-            pixels.fill((0, 0, 10))
             try:
                 ap_is_up = False
                 create_ap_process.terminate()
@@ -262,6 +221,8 @@ def check_internet():
         except urllib.error.URLError:
             print("No internet connection.")
             pixels.fill((10, 0, 0))
+            Speak("Adgang til internet fraforbundet")
+
 
             if(ap_is_up == False):
                 print("Creating AP")
@@ -271,10 +232,9 @@ def check_internet():
                 time.sleep(3)
                 start_webserver()
 
-        print("Checking connection")
         time.sleep(1)
 
-def print_hello_world():
+def listening():
 
     porcupine = None
     pa = None
@@ -303,7 +263,7 @@ def print_hello_world():
             keyword_index = porcupine.process(pcm)
 
             if keyword_index >= 0:
-                threading.Thread(target=stupidrun).start()
+                threading.Thread(target=airun).start()
 
 
     finally:
@@ -318,11 +278,11 @@ def print_hello_world():
 
 
 if __name__ == "__main__":
-    internet_thread = threading.Thread(target=check_internet)
-    hello_thread = threading.Thread(target=print_hello_world)
+    listening_thread = threading.Thread(target=check_internet)
+    hello_thread = threading.Thread(target=listening)
 
-    internet_thread.start()
+    listening_thread.start()
     hello_thread.start()
 
-    internet_thread.join()
+    listening_thread.join()
     hello_thread.join()
