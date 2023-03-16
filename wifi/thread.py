@@ -15,22 +15,24 @@ pixels = neopixel.NeoPixel(board.D18, 60)
 create_ap_process = None
 
 
-def set_wifi_connection():
+def set_wifi_connection(ssid: str, psk: str):
 
     wpa_supplicant_conf = '''
     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
     update_config=1
 
     network={
-            ssid="internet"
-            psk="Kode123!"
+            ssid="'''+ssid+'''"
+            psk=="'''+psk+'''"
     }
     '''
 
     with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'w') as f:
         f.write(wpa_supplicant_conf)
 
-    # subprocess.call(['sudo', 'reboot'])
+
+    return("Rebooting...")
+    subprocess.call(['sudo', 'reboot'])
 
 def start_webserver():
     print("STARTING WEBSERVER")
@@ -45,26 +47,12 @@ def start_webserver():
         if request.method == 'POST':
             ssid = request.form['ssid']
             password = request.form['password']
-            print(f'ssid: {ssid}, Password: {password}')
-            # pixels.fill((25, 25, 25))
 
+            set_wifi_connection(ssid, password)
 
-            # wpa_supplicant_conf = '''
-            # ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-            # update_config=1
+            create_ap_process.terminate()
+            pixels.fill((0, 0, 0))
 
-            # network={
-            #         ssid="internet"
-            #         psk="Kode123!"
-            # }
-            # '''
-
-            # with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'w') as f:
-            #     f.write(wpa_supplicant_conf)
-
-
-            # create_ap_process.terminate()
-            # time.sleep(500)
 
 
         return render_template('index.html')
@@ -99,7 +87,7 @@ def check_internet():
                 args = ["create_ap", "wlan0", "eth0", "R2D2-Config", "12345678", "--dhcp-dns", "192.168.4.1"]
                 create_ap_process = subprocess.Popen(args)
                 ap_is_up = True
-                time.sleep(10)
+                time.sleep(3)
                 start_webserver()
 
         print("Checking connection")
