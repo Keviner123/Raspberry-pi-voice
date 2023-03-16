@@ -246,7 +246,7 @@ def listening():
 
         porcupine = pvporcupine.create(
             access_key=access_key,
-            keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0.ppn'])
+            keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0.ppn', 'r-too-d-too_en_raspberry-pi_v2_1_0'])
         pa = pyaudio.PyAudio()
 
         audio_stream = pa.open(
