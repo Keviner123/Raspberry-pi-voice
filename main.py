@@ -32,11 +32,11 @@ def Speak(text: str):
 def airun():
     print("Hotword Detected")
 
-    pixels.fill((100, 100, 100))
+    pixels.fill((10, 10, 10))
 
 
     pygame.mixer.init()
-    sound = pygame.mixer.Sound('assets\ding.wav')
+    sound = pygame.mixer.Sound('assets/ding.wav')
     playing = sound.play()
 
 
