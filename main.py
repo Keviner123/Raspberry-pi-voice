@@ -36,7 +36,7 @@ def airun():
 
 
     pygame.mixer.init()
-    sound = pygame.mixer.Sound('ding.wav')
+    sound = pygame.mixer.Sound('assets\ding.wav')
     playing = sound.play()
 
 
