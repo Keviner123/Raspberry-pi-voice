@@ -11,7 +11,7 @@ class VoiceActivation:
         self.SoundFilePlayerController = SoundFilePlayer()
         self.activationSound = activationSound
     
-    def Answer():
+    def Answer(self):
         time.sleep(30)
 
     def StartListening(self):
