@@ -16,12 +16,6 @@ class VoiceActivation:
         self.activationSound = activationSound
     
     def Answer(self):
-
-        pygame.mixer.init()
-        sound = pygame.mixer.Sound('assets/ding.wav')
-        playing = sound.play()
-
-
         # Set the silence threshold value (in dB)
         THRESHOLD = 60
 
