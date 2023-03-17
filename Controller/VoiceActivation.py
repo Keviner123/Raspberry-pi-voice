@@ -8,10 +8,6 @@ class VoiceActivation:
     def __init__(self, activationSound) -> None:
         self.SoundFilePlayerController = SoundFilePlayer()
         self.activationSound = activationSound
-
-        self.SoundFilePlayerController.PlayMp3(activationSound)
-
-        pass
     
     def StartListening(self):
 
@@ -42,6 +38,8 @@ class VoiceActivation:
 
                 if keyword_index >= 0:
                     print("keyword detected")
+                    self.SoundFilePlayerController.PlayMp3(self.activationSound)
+
                     # threading.Thread(target=airun).start()
 
 
