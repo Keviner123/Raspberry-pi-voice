@@ -28,7 +28,6 @@ create_ap_process = None
 def Speak(text: str):
     os.system('espeak -vda "'+text+'"')
 
-
 def airun():
     print("Hotword Detected")
 
@@ -116,48 +115,44 @@ def airun():
 
     # Sends the request to google to transcribe the audio
     response = client.recognize(request={"config": config, "audio": audio})
+    try:
+        mytext = response.results[0].alternatives[0].transcript
+        print(mytext)
 
-    mytext = response.results[0].alternatives[0].transcript
-    print(mytext)
+        url = "https://api.xn--prve-hra.xn--svendeprven-ngb.dk/api/question/device?question="+mytext
 
-    url = "https://api.xn--prve-hra.xn--svendeprven-ngb.dk/api/question/device?question="+mytext
-
-    payload={}
-    headers = {
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjMiLCJleHAiOjE3MTA1MDE4MDMsImlzcyI6InRlc3QtZXhhbS1hcGkifQ.9boMBfPswAjOZUo5ZcCLmSnNgk4elePBhGPZPVnOFrk'
-    }
-
-
-    print(str(payload))
-
-    response = requests.request("GET", url, headers=headers, data=payload, timeout=60)
-    response = json.loads(response.text)
+        payload={}
+        headers = {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjMiLCJleHAiOjE3MTA1MDE4MDMsImlzcyI6InRlc3QtZXhhbS1hcGkifQ.9boMBfPswAjOZUo5ZcCLmSnNgk4elePBhGPZPVnOFrk'
+        }
 
 
-    # myobj = gTTS(text=response["answer"], lang='da', slow=False)
-    # os.system('espeak -vda "'+response["answer"]+'"')
-    Speak(response["answer"])
+        print(str(payload))
+
+        response = requests.request("GET", url, headers=headers, data=payload, timeout=60)
+        response = json.loads(response.text)
 
 
-    myobj.save("output.mp3")
+        Speak(response["answer"])
 
-    # pixels.fill((0, 0, 255))
+        myobj.save("output.mp3")
 
 
-    pygame.mixer.init()
+        pygame.mixer.init()
 
-    pygame.mixer.music.load('output.mp3')
+        pygame.mixer.music.load('output.mp3')
 
-    pygame.mixer.music.play()
+        pygame.mixer.music.play()
 
-    while pygame.mixer.music.get_busy():
+        while pygame.mixer.music.get_busy():
+            pass
+
+        pygame.mixer.quit()
+    except:
         pass
-
-    pygame.mixer.quit()
     pixels.fill((0, 0, 0))
 
 def set_wifi_connection(ssid: str, psk: str):
-
     wpa_supplicant_conf = '''
     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
     update_config=1
@@ -246,7 +241,7 @@ def listening():
 
         porcupine = pvporcupine.create(
             access_key=access_key,
-            keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0.ppn', 'r-too-d-too_en_raspberry-pi_v2_1_0'])
+            keyword_paths=['art-o-ditto_en_raspberry-pi_v2_1_0.ppn', 'r-too-d-too_en_raspberry-pi_v2_1_0.ppn'])
         pa = pyaudio.PyAudio()
 
         audio_stream = pa.open(
@@ -263,7 +258,8 @@ def listening():
             keyword_index = porcupine.process(pcm)
 
             if keyword_index >= 0:
-                threading.Thread(target=airun).start()
+                print("keyword detected")
+                # threading.Thread(target=airun).start()
 
 
     finally:
@@ -276,8 +272,9 @@ def listening():
         if pa is not None:
                 pa.terminate()
 
-
 if __name__ == "__main__":
+    Speak("R2D2 ONLINE")
+
     listening_thread = threading.Thread(target=check_internet)
     hello_thread = threading.Thread(target=listening)
 

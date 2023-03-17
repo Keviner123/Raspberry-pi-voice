@@ -1,4 +1,7 @@
 {
+	"settings": {
+		"python.linting.enabled": false
+	},
 	"folders": [
 		{
 			"path": "."
