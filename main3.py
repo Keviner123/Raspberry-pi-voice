@@ -1,11 +1,12 @@
 
 from Controller.SoundFilePlayer import SoundFilePlayer
 from Controller.Webserver import Webserver
+from Controller.VoiceActivation import VoiceActivation
+
 
 SoundFilePlayerController = SoundFilePlayer()
-
 WebserverController = Webserver(80)
+VoiceActivationController = VoiceActivation()
 
-# SoundFilePlayerController.PlayMp3("sound.mp3")
-WebserverController.start_webserver()
 
+VoiceActivationController.StartListening()
