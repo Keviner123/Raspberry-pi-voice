@@ -4,9 +4,8 @@ from Controller.Webserver import Webserver
 from Controller.VoiceActivation import VoiceActivation
 
 
-SoundFilePlayerController = SoundFilePlayer()
 WebserverController = Webserver(80)
-VoiceActivationController = VoiceActivation()
+VoiceActivationController = VoiceActivation("assets/ding.mp3")
 
 
-VoiceActivationController.StartListening()
+# VoiceActivationController.StartListening()

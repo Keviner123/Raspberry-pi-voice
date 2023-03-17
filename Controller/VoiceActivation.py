@@ -2,8 +2,15 @@ import pvporcupine
 import pyaudio
 import struct
 
+from Controller.SoundFilePlayer import SoundFilePlayer
+
 class VoiceActivation:
-    def __init__(self) -> None:
+    def __init__(self, activationSound) -> None:
+        self.SoundFilePlayerController = SoundFilePlayer()
+        self.activationSound = activationSound
+
+        self.SoundFilePlayerController.PlayMp3(activationSound)
+
         pass
     
     def StartListening(self):
