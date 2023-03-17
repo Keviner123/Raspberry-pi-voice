@@ -5,7 +5,7 @@ import time
 import pvporcupine
 import pyaudio
 import struct
-
+import wave
 import pygame
 
 from Controller.SoundFilePlayer import SoundFilePlayer
