@@ -1,3 +1,5 @@
+import threading
+import time
 import pvporcupine
 import pyaudio
 import struct
@@ -9,6 +11,9 @@ class VoiceActivation:
         self.SoundFilePlayerController = SoundFilePlayer()
         self.activationSound = activationSound
     
+    def Answer():
+        time.sleep(30)
+
     def StartListening(self):
 
         porcupine = None
@@ -38,9 +43,9 @@ class VoiceActivation:
 
                 if keyword_index >= 0:
                     print("keyword detected")
-                    self.SoundFilePlayerController.PlayMp3(self.activationSound)
+                    # self.SoundFilePlayerController.PlayMp3(self.activationSound)
 
-                    # threading.Thread(target=airun).start()
+                    threading.Thread(target=self.Answer).start()
 
 
         finally:
