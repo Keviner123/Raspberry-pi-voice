@@ -1,5 +1,6 @@
 import pvporcupine
 import pyaudio
+import struct
 
 class VoiceActivation:
     def __init__(self) -> None:
