@@ -16,6 +16,8 @@ class VoiceActivation:
         self.activationSound = activationSound
     
     def Answer(self):
+        self.SoundFilePlayerController.PlayMp3(self.activationSound)
+
         # Set the silence threshold value (in dB)
         THRESHOLD = 60
 
