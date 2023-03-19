@@ -1,7 +1,7 @@
 import flask
 import subprocess
 from flask import render_template, request
-from Unused.WifiConfigFile import WifiConfigFile
+from DAL.wifi_config_file import WifiConfigFile
 
 class Webserver:
     def __init__(self):
