@@ -7,15 +7,13 @@ import wave
 import pvporcupine
 import pyaudio
 
-from BLL.SoundFilePlayer import SoundFilePlayer
+from DAL.SoundFilePlayer import SoundFilePlayer
 
-class VoiceActivation:
+class HotwordDetector:
     def __init__(self, activation_sound: str, access_key: str) -> None:
         self.sound_file_player_controller = SoundFilePlayer()
         self.activation_sound = activation_sound
         self.access_key = access_key
-
-        self.wait_for_hotwords()
     # def Answer(self):
     #     self.sound_file_player_controller.PlayMp3(self.activationSound)
 
@@ -73,7 +71,7 @@ class VoiceActivation:
     #     stream.close()
     #     audio.terminate()
 
-    def wait_for_hotwords(self):
+    def wait_for_hotwords(self) -> bool:
         porcupine = None
         python_audio = None
         audio_stream = None
@@ -98,16 +96,4 @@ class VoiceActivation:
             keyword_index = porcupine.process(pcm)
 
             if keyword_index >= 0:
-                print("keyword detected")
-
-                # threading.Thread(target=self.Answer).start()
-
-
-        # finally:
-        #     if porcupine is not None:
-        #         porcupine.delete()
-
-        #     if audio_stream is not None:
-        #         audio_stream.close()
-        #     if pa is not None:
-        #         pa.terminate()
+                return(True)
