@@ -1,3 +1,4 @@
+import time
 import yaml
 from BLL.question_answering_service import QuestionAnsweringService
 
@@ -19,6 +20,8 @@ if __name__ == '__main__':
 
     while hotwordetector.wait_for_hotwords():
         soundfileplayer.play_mp3_async(config["activation-sound"])
+        time.sleep(1)
+
         voicelistener.start_recording()
 
         try:
