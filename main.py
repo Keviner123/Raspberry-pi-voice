@@ -23,9 +23,9 @@ if __name__ == '__main__':
     internetchecker = InternetChecker()
 
     while hotwordetector.wait_for_hotwords():
-        soundfileplayer.play_mp3_async(config["activation-sound"])
 
         if(internetchecker.check()):
+            soundfileplayer.play_mp3_async(config["activation-sound"])
             
             time.sleep(1)
 
@@ -44,4 +44,4 @@ if __name__ == '__main__':
             except IndexError:
                 print("No voice detected")
         else:
-            subprocess.run(['espeak', '-v', 'da', "Jeg kunne ikke tilslutte internettet, starter Wi-Fi hotspot"])
+            subprocess.run(['espeak', '-v', 'en', "I was unable to connect to the internet, starting wifi hotspot."])
