@@ -8,7 +8,7 @@ class VoiceListener:
     def __init__(self) -> None:
         pass
 
-    def Answer(self):
+    def start_recording(self):
 
         # Set the silence threshold value (in dB)
         THRESHOLD = 60
@@ -63,3 +63,4 @@ class VoiceListener:
         stream.stop_stream()
         stream.close()
         audio.terminate()
+        return True

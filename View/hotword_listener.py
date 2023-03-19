@@ -7,8 +7,6 @@ import wave
 import pvporcupine
 import pyaudio
 
-from DAL.SoundFilePlayer import SoundFilePlayer
-
 class HotwordDetector:
     def __init__(self, access_key: str) -> None:
         self.access_key = access_key
