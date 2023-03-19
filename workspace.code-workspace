@@ -1,6 +1,14 @@
 {
 	"settings": {
-		"python.linting.enabled": false
+		"python.linting.enabled": false,
+		"python.linting.pylintArgs": [
+			"--disable=missing-class-docstring",
+			"--disable=missing-function-docstring",
+			"--disable=missing-module-docstring",
+			"--disable=line-too-long",
+			"--disable=unused-import"
+		]
+
 	},
 	"folders": [
 		{
