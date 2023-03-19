@@ -4,9 +4,10 @@ import pygame
 class SoundFilePlayer:
 
     def __init__(self):
-        pygame.mixer.init()
+        pass
 
     def play_mp3_async(self, filelocation):
+        pygame.mixer.init()
         pygame.mixer.music.load(filelocation)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy():
