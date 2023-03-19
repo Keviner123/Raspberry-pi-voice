@@ -1,9 +1,11 @@
 import time
 import yaml
 
+from BLL.InternetChecker import InternetChecker
 from BLL.question_answering_service import QuestionAnsweringService
 from BLL.sound_file_player import SoundFilePlayer
 from BLL.text_to_speach_converter import TextToSpeechConverter
+
 from View.hotword_listener import HotwordDetector
 from View.voice_listener import VoiceListener
 
@@ -17,22 +19,28 @@ if __name__ == '__main__':
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
     questionansweringservice = QuestionAnsweringService()
+    internetchecker = InternetChecker()
 
     while hotwordetector.wait_for_hotwords():
         soundfileplayer.play_mp3_async(config["activation-sound"])
-        time.sleep(1)
 
-        voicelistener.start_recording()
+        if(internetchecker.check()):
+            
+            time.sleep(1)
 
-        try:
-            transcribe_text = voicelistener.transcribe()
-            print(transcribe_text)
+            voicelistener.start_recording()
 
-            question_answer = questionansweringservice.get_answer(transcribe_text)
-            texttospeechconverter.convert_text_to_mp3(question_answer)
+            try:
+                transcribe_text = voicelistener.transcribe()
+                print(transcribe_text)
 
-            soundfileplayer.play_mp3_async("output.mp3")
+                question_answer = questionansweringservice.get_answer(transcribe_text)
+                texttospeechconverter.convert_text_to_mp3(question_answer)
+
+                soundfileplayer.play_mp3_async("output.mp3")
 
 
-        except IndexError:
-            print("No voice detected")
+            except IndexError:
+                print("No voice detected")
+        else:
+            print("No internet")
