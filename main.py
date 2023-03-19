@@ -1,5 +1,6 @@
 import time
 import yaml
+import subprocess
 
 from BLL.InternetChecker import InternetChecker
 from BLL.question_answering_service import QuestionAnsweringService
@@ -35,12 +36,12 @@ if __name__ == '__main__':
                 print(transcribe_text)
 
                 question_answer = questionansweringservice.get_answer(transcribe_text)
+                
                 texttospeechconverter.convert_text_to_mp3(question_answer)
-
                 soundfileplayer.play_mp3_async("output.mp3")
 
 
             except IndexError:
                 print("No voice detected")
         else:
-            print("No internet")
+            subprocess.run(['espeak', '-v', 'da', "Jeg kunne ikke tilslutte internettet, starter Wi-Fi hotspot"])
