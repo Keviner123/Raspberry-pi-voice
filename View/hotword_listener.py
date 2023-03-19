@@ -18,7 +18,7 @@ class HotwordDetector:
 
         porcupine = pvporcupine.create(
             access_key=self.access_key,
-            keyword_paths=['assets/art-o-ditto_en_raspberry-pi_v2_1_0.ppn', 'assets/r-too-d-too_en_raspberry-pi_v2_1_0.ppn'])
+            keyword_paths=['assets/art-o-ditto_en_raspberry-pi_v2_1_0.ppn', 'assets/r-too-d-too_en_raspberry-pi_v2_1_0.ppn', 'assets/kasper_en_raspberry-pi_v2_1_0.ppn'])
         python_audio = pyaudio.PyAudio()
 
         audio_stream = python_audio.open(
