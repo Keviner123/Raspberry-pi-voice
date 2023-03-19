@@ -52,5 +52,7 @@ if __name__ == '__main__':
             accesspoint = Accesspoint("R2D2-Config", "passwword")
             accesspoint.start()
             
+            time.sleep(5)
+            
             webserver = Webserver()
             webserver.start()

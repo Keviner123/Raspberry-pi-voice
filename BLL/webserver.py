@@ -19,10 +19,6 @@ class Webserver:
                 wcf = WifiConfigFile("/etc/wpa_supplicant/wpa_supplicant.conf")
                 wcf.update_config_file(ssid, password)
                 subprocess.call(['sudo', 'reboot'])
-
-
-
-                return(":)")
             return render_template('index.html')
 
-        app.run(host="0.0.0.0", port=80)
+        app.run(host="0.0.0.0", port=5000)
