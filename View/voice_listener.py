@@ -3,15 +3,19 @@ import math
 import wave
 import pyaudio
 
+from BLL.google_speech_to_text_client import GoogleSpeechToTextClient
+
 
 class VoiceListener:
     def __init__(self) -> None:
-        pass
+        self.googlespeechtotextclient = GoogleSpeechToTextClient("login.json")
+
+    
 
     def start_recording(self):
 
         # Set the silence threshold value (in dB)
-        THRESHOLD = 60
+        THRESHOLD = 30
 
         # Set the chunk size and recording duration
         CHUNK_SIZE = 1024
@@ -37,7 +41,7 @@ class VoiceListener:
         silence_counter = 0
 
         # Record audio until there is silence
-        while silence_counter < 30:  # adjust this value to set the minimum silence duration in frames
+        while silence_counter < 50:  # adjust this value to set the minimum silence duration in frames
             # Read a chunk of audio data from the input stream
             data = stream.read(CHUNK_SIZE)
 
@@ -64,3 +68,5 @@ class VoiceListener:
         stream.close()
         audio.terminate()
         return True
+    def transcribe(self) -> str:
+        return self.googlespeechtotextclient.transcribe_audio_file("output.wav")

@@ -13,8 +13,9 @@ if __name__ == '__main__':
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
 
+
     while hotwordetector.wait_for_hotwords():
         soundfileplayer.play_mp3_async("assets/ding.mp3")
 
         voicelistener.start_recording()
-        print("done recording")
+        print(voicelistener.transcribe())
