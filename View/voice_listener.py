@@ -5,7 +5,6 @@ import pyaudio
 
 from BLL.google_speech_to_text_client import GoogleSpeechToTextClient
 
-
 class VoiceListener:
     def __init__(self) -> None:
         self.googlespeechtotextclient = GoogleSpeechToTextClient("login.json")
@@ -66,5 +65,6 @@ class VoiceListener:
         stream.close()
         audio.terminate()
         return True
+
     def transcribe(self) -> str:
         return self.googlespeechtotextclient.transcribe_audio_file("output.wav")
