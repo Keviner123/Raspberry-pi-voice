@@ -49,7 +49,7 @@ if __name__ == '__main__':
             print("Creating AP")
             subprocess.run(['espeak', '-v', 'en', "I was unable to connect to the internet, starting wifi hotspot."])
 
-            accesspoint = Accesspoint("R2D2-Config", "pass")
+            accesspoint = Accesspoint("R2D2-Config", "passwword")
             accesspoint.start()
             
             webserver = Webserver()
