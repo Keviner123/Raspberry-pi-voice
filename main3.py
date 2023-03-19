@@ -1,4 +1,5 @@
 import yaml
+from BLL.question_answering_service import QuestionAnsweringService
 
 from BLL.text_to_speach_converter import TextToSpeechConverter
 from View.hotword_listener import HotwordDetector
@@ -14,15 +15,19 @@ if __name__ == '__main__':
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
+    questionansweringservice = QuestionAnsweringService()
 
     while hotwordetector.wait_for_hotwords():
         soundfileplayer.play_mp3_async(config["activation-sound"])
         voicelistener.start_recording()
 
         try:
-            TranscribeText = voicelistener.transcribe()
-            texttospeechconverter.convert_text_to_mp3(TranscribeText)
+            transcribe_text = voicelistener.transcribe()
+            question_answer = questionansweringservice.get_answer(transcribe_text)
+            texttospeechconverter.convert_text_to_mp3(question_answer)
+
             soundfileplayer.play_mp3_async("output.mp3")
+
 
         except IndexError:
             print("No voice detected")

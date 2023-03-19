@@ -1,5 +1,8 @@
-from BLL.google_speech_to_text_client import GoogleSpeechToTextClient
+from BLL.question_answering_service import QuestionAnsweringService
 
-gstc = GoogleSpeechToTextClient("login.json")
+questionansweringservice = QuestionAnsweringService()
 
-print(gstc.transcribe_audio_file("test.wav"))
+aaaa = questionansweringservice.get_answer("hi")
+
+
+print(aaaa)
