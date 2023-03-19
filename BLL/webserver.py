@@ -4,11 +4,10 @@ from flask import render_template, request
 from Unused.WifiConfigFile import WifiConfigFile
 
 class Webserver:
-    def __init__(self, port:int):
-        self.port = port
+    def __init__(self):
         pass
 
-    def start_webserver(self):
+    def start(self):
         app = flask.Flask(__name__, template_folder='../templates/')
 
         @app.route('/', methods=['GET', 'POST'])
@@ -26,4 +25,4 @@ class Webserver:
                 return(":)")
             return render_template('index.html')
 
-        app.run(host="0.0.0.0", port=self.port)
+        app.run(host="0.0.0.0", port=80)
