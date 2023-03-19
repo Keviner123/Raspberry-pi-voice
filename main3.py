@@ -5,7 +5,8 @@
 from View.hotword_listener import HotwordDetector
 from View.voice_listener import VoiceListener
 from DAL.sound_file_player import SoundFilePlayer
-
+from gtts import gTTS
+½
 
 
 if __name__ == '__main__':
@@ -18,4 +19,8 @@ if __name__ == '__main__':
         soundfileplayer.play_mp3_async("assets/ding.mp3")
 
         voicelistener.start_recording()
-        print(voicelistener.transcribe())
+
+        myobj = gTTS(text=voicelistener.transcribe(), lang='da', slow=True)
+        myobj.save("output.mp3")
+
+        soundfileplayer.play_mp3_async("output.mp3")

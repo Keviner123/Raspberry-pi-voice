@@ -13,7 +13,7 @@ class VoiceListener:
     def start_recording(self):
 
         # Set the silence threshold value (in dB)
-        THRESHOLD = 30
+        THRESHOLD = 40
 
         # Set the chunk size and recording duration
         CHUNK_SIZE = 1024
