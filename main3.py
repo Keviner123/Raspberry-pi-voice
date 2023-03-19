@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         try:
             transcribe_text = voicelistener.transcribe()
-            print("transcribe_text")
+            print(transcribe_text)
 
             question_answer = questionansweringservice.get_answer(transcribe_text)
             texttospeechconverter.convert_text_to_mp3(question_answer)
