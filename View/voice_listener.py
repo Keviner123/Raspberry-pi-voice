@@ -10,8 +10,6 @@ class VoiceListener:
     def __init__(self) -> None:
         self.googlespeechtotextclient = GoogleSpeechToTextClient("login.json")
 
-    
-
     def start_recording(self):
 
         # Set the silence threshold value (in dB)

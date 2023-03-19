@@ -15,5 +15,5 @@ class SoundFilePlayer:
         pygame.mixer.quit()
 
     def play_mp3_async(self, filelocation: str):
-        thread = threading.Thread(target=self.play_mp3_async, args=(filelocation,))
+        thread = threading.Thread(target=self.play_mp3, args=(filelocation,))
         thread.start()
