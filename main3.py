@@ -1,26 +1,30 @@
+import yaml
 
-# from Controller.Webserver import Webserver
-# WebserverController = Webserver(80)
-
+from BLL.text_to_speach_converter import TextToSpeechConverter
 from View.hotword_listener import HotwordDetector
 from View.voice_listener import VoiceListener
 from DAL.sound_file_player import SoundFilePlayer
-from gtts import gTTS
-½
+
 
 
 if __name__ == '__main__':
-    hotwordetector = HotwordDetector("KqwUDxJhP+vf3BYnrH3/VXb5Uy2qOr50MhrMCflhbybizGB15keeeA==")
+
+    with open("config.yaml", "r", encoding="utf-8") as yamlfile:
+        config = yaml.load(yamlfile, Loader=yaml.FullLoader)
+
+    hotwordetector = HotwordDetector(config["picovoice-apikey"])
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
+    texttospeechconverter = TextToSpeechConverter()
 
 
     while hotwordetector.wait_for_hotwords():
-        soundfileplayer.play_mp3_async("assets/ding.mp3")
+        soundfileplayer.play_mp3_async(config["activation-sound"])
 
         voicelistener.start_recording()
 
-        myobj = gTTS(text=voicelistener.transcribe(), lang='da', slow=True)
-        myobj.save("output.mp3")
+        TranscribeText = voicelistener.transcribe()
+
+        texttospeechconverter.convert_text_to_mp3(TranscribeText)
 
         soundfileplayer.play_mp3_async("output.mp3")

@@ -7,7 +7,8 @@
 			"--disable=missing-module-docstring",
 			"--disable=line-too-long",
 			"--disable=unused-import",
-			"--disable=missing-final-newline"
+			"--disable=missing-final-newline",
+			"--disable=import-error"
 		]
 
 	},
