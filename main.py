@@ -2,8 +2,8 @@ import time
 import yaml
 import subprocess
 
-from BLL.InternetChecker import InternetChecker
 from BLL.accesspoint import Accesspoint
+from BLL.nternet_checker import InternetChecker
 from BLL.question_answering_service import QuestionAnsweringService
 from BLL.sound_file_player import SoundFilePlayer
 from BLL.text_to_speach_converter import TextToSpeechConverter
