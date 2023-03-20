@@ -1,8 +1,12 @@
-from BLL.question_answering_service import QuestionAnsweringService
+import asyncio
+import websockets
 
-questionansweringservice = QuestionAnsweringService()
+class WebSocketClient:
 
-aaaa = questionansweringservice.get_answer("hi")
+    
+async def main():
+    client = WebSocketClient("wss://api.prøve.svendeprøven.dk/ws/r2d2device")
+    response = await client.send_and_receive('{"Type": "mac","Message": "00:B0:D0:63:C2:11"}')
+    print(response)
 
-
-print(aaaa)
+asyncio.run(main())
